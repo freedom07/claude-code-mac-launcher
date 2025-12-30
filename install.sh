@@ -8,13 +8,32 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+REPO_URL="https://github.com/freedom07/claude-code-mac-launcher.git"
+INSTALL_DIR="$HOME/.claude-code-mac-launcher"
+
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}  Claude Code Mac Launcher - Install   ${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 
-# Get the directory where this script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Check if running via curl (no local files)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null)" && pwd 2>/dev/null)" || SCRIPT_DIR=""
+
+if [ -z "$SCRIPT_DIR" ] || [ ! -f "$SCRIPT_DIR/config.sh" ]; then
+    echo -e "${YELLOW}Downloading from GitHub...${NC}"
+
+    # Clone or update repo
+    if [ -d "$INSTALL_DIR" ]; then
+        cd "$INSTALL_DIR"
+        git pull --quiet
+    else
+        git clone --quiet "$REPO_URL" "$INSTALL_DIR"
+        cd "$INSTALL_DIR"
+    fi
+
+    # Run install from cloned repo
+    exec "$INSTALL_DIR/install.sh"
+fi
 
 # Load config
 source "$SCRIPT_DIR/config.sh"

@@ -6,7 +6,7 @@
 # @raycast.mode silent
 
 # Optional parameters:
-# @raycast.icon 🤖
+# @raycast.icon ▶️
 # @raycast.argument1 { "type": "text", "placeholder": "프롬프트 (선택사항)", "optional": true }
 # @raycast.packageName Claude Code
 
